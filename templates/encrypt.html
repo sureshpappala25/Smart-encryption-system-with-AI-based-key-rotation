@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Center | Smart AI Encryption</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+</head>
+
+<body class="body-secure">
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img" alt="Logo"> AI-Driven
+                Sec
+            </div>
+            <nav>
+                <a href="/dashboard" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Overview
+                </a>
+                <a href="/encrypt" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Encryption Center
+                </a>
+                <a href="/decrypt" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                    </svg>
+                    Decryption
+                </a>
+                <a href="/history" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    Audit Logs
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 3rem;">
+                <h1 class="text-gradient">Secure Data Encryption</h1>
+            </header>
+
+            <div style="max-width: 800px;">
+                <form action="/encrypt" method="post" enctype="multipart/form-data" class="glass-card animate-in">
+                    <div class="input-group">
+                        <label>Data Content / Text (Optional if File is selected)</label>
+                        <textarea name="text" rows="4"
+                            placeholder="Enter sensitive information to encrypt..."></textarea>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 2rem;">
+                        <label>Or Upload File for Encryption</label>
+                        <input type="file" name="file" class="file-input"
+                            style="padding: 10px; border: 1px dashed var(--glass-border); border-radius: 8px; width: 100%; background: rgba(255,255,255,0.05); color: var(--text-light);">
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Upload a file to
+                            securely encrypt its contents using AI algorithm.</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="input-group">
+                            <label>Simulated Traffic Pattern (AI Test)</label>
+                            <select name="pattern">
+                                <option value="normal">Normal Activity (Low Risk)</option>
+                                <option value="malware">Malware Pattern (Medium Risk)</option>
+                                <option value="ddos">DDoS Attack (High Risk)</option>
+                                <option value="bruteforce">Brute Force Attempt (Critical Risk)</option>
+                                <option value="phishing">Phishing Pattern (Medium Risk)</option>
+                            </select>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">This simulates
+                                live environment network data for the AI engine.</p>
+                        </div>
+
+                        <div class="input-group" style="opacity: 0.6; pointer-events: none;">
+                            <label>Algorithm Selection</label>
+                            <input type="text" value="AI-Driven (Adaptive)" disabled>
+                            <p style="font-size: 0.75rem; color: var(--primary); margin-top: 5px;">Engine will
+                                dynamically select AES, RSA, or ECC based on Risk Score.</p>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(14, 165, 233, 0.05); padding: 1.5rem; border-radius: 14px; border: 1px dashed var(--glass-border); margin-bottom: 2rem;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                            <span style="font-size: 1.25rem;">🧠</span>
+                            <h4 style="margin: 0;">AI Engine Strategy</h4>
+                        </div>
+                        <ul style="font-size: 0.8125rem; color: var(--text-muted); padding-left: 20px;">
+                            <li>Analyzes sensitivity using TF-IDF Vectorization</li>
+                            <li>Checks behavior logs for unauthorized volume access</li>
+                            <li>Cross-references threat scores from global patterns</li>
+                            <li>Triggers automatic key rotation if unified risk > 0.6</li>
+                        </ul>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        Initiate AI-Driven Encryption
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        function updateThemeUI() {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            themeIcon.innerText = isLight ? '☀️' : '🌙';
+            themeText.innerText = isLight ? 'Light Mode' : 'Dark Mode';
+        }
+
+        updateThemeUI();
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.documentElement.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeUI();
+        });
+    </script>
+
+</body>
+
+</html>

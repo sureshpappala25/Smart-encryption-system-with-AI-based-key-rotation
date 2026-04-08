@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Smart AI Encryption</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="body-secure">
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation (Same for all pages) -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img" alt="Logo"> AI-Driven
+                Sec
+            </div>
+            <nav>
+                <a href="/dashboard" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Overview
+                </a>
+                <a href="/encrypt" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Encryption Center
+                </a>
+                <a href="/decrypt" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                    </svg>
+                    Decryption
+                </a>
+                <a href="/history" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    Audit Logs
+                </a>
+
+                <div style="margin-top: auto;">
+                    <div id="themeToggle" class="nav-item" style="cursor: pointer; margin-bottom: 0.5rem;">
+                        <span id="themeIcon" style="font-size: 1.25rem; margin-right: 12px;">🌙</span>
+                        <span id="themeText">Dark Mode</span>
+                    </div>
+                    <a href="/logout" class="nav-item" style="color: var(--danger);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Sign Out
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                <div>
+                    <h1 class="text-gradient">Security Command Center</h1>
+                    <p style="color: white;">Real-time AI monitoring and cryptographic management.</p>
+                </div>
+                <div class="glass-card"
+                    style="padding: 0.75rem 1.5rem; border-radius: 99px; display: flex; align-items: center; gap: 10px;">
+                    <span
+                        style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: inline-block;"></span>
+                    <span style="font-size: 0.875rem; font-weight: 600;">System Online</span>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="grid-3 animate-in">
+                <div class="glass-card stat-glow">
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Unified Risk Level
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <h2 style="font-size: 2.5rem; margin-bottom: 0;">{{ metrics.threat_level }}</h2>
+                        {% if metrics.threat_level == 'Low' %}
+                        <span class="badge badge-risk-low">Optimal Protection</span>
+                        {% elif metrics.threat_level == 'Medium' %}
+                        <span class="badge badge-risk-mid">Moderate Elevation</span>
+                        {% else %}
+                        <span class="badge badge-risk-high">High Alert</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">Keys in Rotation
+                    </p>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 0;">{{ metrics.total_encrypted }}</h2>
+                    <p style="font-size: 0.75rem; color: var(--success);">+12 from last session</p>
+                </div>
+                <div class="glass-card">
+                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">AI Key Health</p>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 0;">{{ metrics.key_health }}%</h2>
+                    <div
+                        style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 10px;">
+                        <div id="keyHealthBar" data-health="{{ metrics.key_health }}"
+                            style="height: 100%; background: var(--primary); border-radius: 2px; width: 0; transition: width 1s ease-out;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Layout -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; animation-delay: 0.2s;" class="animate-in">
+                <div class="glass-card">
+                    <h3>Threat Analytics Trend</h3>
+                    <div class="chart-container">
+                        <canvas id="threatChart"></canvas>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <h3>Algorithm Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="algoChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Alerts -->
+            <div class="glass-card animate-in" style="margin-top: 1.5rem; animation-delay: 0.4s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Real-time Security Events</h3>
+                    <span style="font-size: 0.875rem; color: var(--primary); font-weight: 600; cursor: pointer;">View
+                        All Logs</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    {% if metrics.recent_events %}
+                    {% for event in metrics.recent_events %}
+                    <div class="event-card {% if event.type == 'file' %}border-file{% else %}border-text{% endif %}">
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 10px;">
+                            {% if event.type == 'file' %}📁{% else %}🔒{% endif %}
+                        </div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 0.9375rem; font-weight: 600;">{{ event.label }}</p>
+                            <p style="font-size: 0.8125rem; color: var(--text-muted);">Algorithm: {{ event.algorithm }}
+                                | {{ event.risk }} Risk</p>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">{{ event.time }}</span>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="text-align: center; color: var(--text-muted); padding: 20px;">No recent security events
+                        detected.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        /**
+         * AI-Driven Security Command Center - Real-time Data Visualization
+         * 
+         * This script handles the dynamic rendering of threat analytics and 
+         * cryptographic distribution using Chart.js.
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Robustly inject backend metrics using JSON.parse to satisfy IDE parsers
+            const securityData = JSON.parse('{{ metrics | tojson | safe }}');
+
+            // 1. Unified Key Health Animation
+            const healthBar = document.getElementById('keyHealthBar');
+            if (healthBar) {
+                healthBar.style.width = securityData.key_health + '%';
+            }
+
+            // 2. Threat Analytics Trend (Line Chart)
+            const trendCtx = document.getElementById('threatChart').getContext('2d');
+            new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: securityData.risk_trend.map((_, i) => `Op ${i + 1}`),
+                    datasets: [{
+                        label: 'Risk Score',
+                        data: securityData.risk_trend,
+                        borderColor: '#0ea5e9',
+                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#0ea5e9'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, max: 1.0, grid: { color: 'rgba(255,255,255,0.05)' }, border: { display: false }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, border: { display: false }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+
+            // 3. Algorithm Distribution (Doughnut Chart)
+            const algoCtx = document.getElementById('algoChart').getContext('2d');
+            new Chart(algoCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['AES', 'RSA', 'ECC'],
+                    datasets: [{
+                        data: [
+                            securityData.algorithm_dist.AES,
+                            securityData.algorithm_dist.RSA,
+                            securityData.algorithm_dist.ECC
+                        ],
+                        backgroundColor: ['#0ea5e9', '#6366f1', '#f43f5e'],
+                        borderWidth: 0,
+                        cutout: '75%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 20, usePointStyle: true } }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        function updateThemeUI() {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            themeIcon.innerText = isLight ? '☀️' : '🌙';
+            themeText.innerText = isLight ? 'Light Mode' : 'Dark Mode';
+
+            // Update Chart.js Defaults for the new theme
+            const textColor = isLight ? '#475569' : '#94a3b8';
+            const gridColor = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
+
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.color = textColor;
+                Chart.defaults.borderColor = gridColor;
+
+                // Look for chart instances and update them
+                const chartIds = ['threatChart', 'algoChart'];
+                chartIds.forEach(id => {
+                    const canvas = document.getElementById(id);
+                    if (canvas) {
+                        const chart = Chart.getChart(canvas);
+                        if (chart) {
+                            if (chart.options.scales) {
+                                chart.options.scales.x && (chart.options.scales.x.grid.color = gridColor);
+                                chart.options.scales.y && (chart.options.scales.y.grid.color = gridColor);
+                            }
+                            chart.update();
+                        }
+                    }
+                });
+            }
+        }
+
+        updateThemeUI();
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.documentElement.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeUI();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Key Rotation | Smart AI Encryption</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="body-secure">
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation (Same for all pages) -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img" alt="Logo"> AI-Driven
+                Sec
+            </div>
+            <nav>
+                <a href="/dashboard" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Overview
+                </a>
+                <a href="/encrypt" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Encryption Center
+                </a>
+                <a href="/decrypt" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                    </svg>
+                    Decryption
+                </a>
+                <a href="/key_rotation" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+                    </svg>
+                    AI Key Rotation
+                </a>
+                <a href="/history" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    Audit Logs
+                </a>
+
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 3rem;">
+                <h1 class="text-gradient">AI Key Rotation Management</h1>
+                <p style="color: var(--text-muted);">Monitor and manually trigger intelligent cryptographic refreshes
+                    based on risk entropy.</p>
+            </header>
+
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem;">
+                <div class="glass-card animate-in">
+                    <h3>Adaptive Rotation Strategy</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.875rem;">
+                        The system automatically rotates keys when the Risk Assessment Score exceeds 0.6.
+                        You can manually test the rotation logic by simulating threat parameters below.
+                    </p>
+
+                    <form action="/key_rotation" method="post">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <div class="input-group">
+                                <label>Consecutive Login Attempts</label>
+                                <input type="number" name="login" value="2" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Concurrent Data Access Sessions</label>
+                                <input type="number" name="access" value="5" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Simulated Threat Score (0.0 - 1.0)</label>
+                            <input type="range" name="threat" min="0" max="1" step="0.1" value="0.3"
+                                class="range-slider" style="height: 10px; cursor: pointer;">
+                            <div
+                                style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">
+                                <span>Low Risk</span>
+                                <span>High Risk</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="margin-top: 1rem;">
+                            Trigger AI Rotation Assessment
+                        </button>
+                    </form>
+                </div>
+
+                <div class="glass-card animate-in" style="animation-delay: 0.2s;">
+                    <h3 style="margin-bottom: 1.5rem;">Key Health Metrics</h3>
+                    <div
+                        style="padding: 1.5rem; background: rgba(14, 165, 233, 0.03); border-radius: 16px; border: 1px solid var(--glass-border); margin-bottom: 1rem;">
+                        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 5px;">Rotation Score
+                            Threshold</p>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">0.60</div>
+                    </div>
+                    <div
+                        style="padding: 1.5rem; background: rgba(16, 185, 129, 0.03); border-radius: 16px; border: 1px solid var(--glass-border); margin-bottom: 1rem;">
+                        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 5px;">Last Rotation
+                            Timestamp</p>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--success);">{{ current_time if
+                            current_time else 'Active Now' }}</div>
+                    </div>
+                    <div
+                        style="padding: 1.5rem; background: rgba(99, 102, 241, 0.03); border-radius: 16px; border: 1px solid var(--glass-border);">
+                        <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 5px;">Projected Key
+                            Entropy</p>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: var(--secondary);">High</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card animate-in" style="margin-top: 1.5rem; animation-delay: 0.4s;">
+                <h3>Understanding AI Rotation</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem;">
+                    <div>
+                        <h4 style="font-size: 0.9375rem; color: var(--primary); margin-bottom: 10px;">Security Triggers
+                        </h4>
+                        <p style="font-size: 0.8125rem; color: var(--text-muted);">Rotation logic is influenced by
+                            anomalies in user access patterns and sensitivity of accessed data.</p>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 0.9375rem; color: var(--secondary); margin-bottom: 10px;">Asymmetric
+                            Refresh</h4>
+                        <p style="font-size: 0.8125rem; color: var(--text-muted);">Every rotation regenerates both
+                            symmetric (AES) and asymmetric (RSA/ECC) key pairs.</p>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 0.9375rem; color: var(--accent); margin-bottom: 10px;">Zero Downtime</h4>
+                        <p style="font-size: 0.8125rem; color: var(--text-muted);">Adaptive response occurs in the
+                            background with zero disruption to active decryption sessions.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        function updateThemeUI() {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            themeIcon.innerText = isLight ? '☀️' : '🌙';
+            themeText.innerText = isLight ? 'Light Mode' : 'Dark Mode';
+        }
+
+        updateThemeUI();
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.documentElement.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeUI();
+        });
+    </script>
+
+</body>
+
+</html>

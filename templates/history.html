@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Logs | Smart AI Encryption</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+</head>
+
+<body class="body-audit">
+
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation (Same for all pages) -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img" alt="Logo"> AI-Driven
+                Sec
+            </div>
+            <nav>
+                <a href="/dashboard" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Overview
+                </a>
+                <a href="/encrypt" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Encryption Center
+                </a>
+                <a href="/decrypt" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                    </svg>
+                    Decryption
+                </a>
+                <a href="/history" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    Audit Logs
+                </a>
+
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 3rem;">
+                <h1 class="text-gradient">Security Audit History</h1>
+            </header>
+
+            <div class="glass-card animate-in">
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr
+                                style="border-bottom: 1px solid var(--glass-border); color: var(--text-muted); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                                <th style="padding: 1rem;">ID</th>
+                                <th style="padding: 1rem;">Algorithm</th>
+                                <th style="padding: 1rem;">Risk Assessment</th>
+                                <th style="padding: 1rem;">Input Fragment</th>
+                                <th style="padding: 1rem;">Encrypted Token</th>
+                                <th style="padding: 1rem;">Timestamp</th>
+                                <th style="padding: 1rem; text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 0.9375rem;">
+                            {% for row in data %}
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.02); transition: 0.2s;"
+                                onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                                onmouseout="this.style.background='transparent'">
+                                <td style="padding: 1.25rem; font-weight: 500; color: var(--text-muted);">#{{ loop.index }}
+                                </td>
+                                <td style="padding: 1.25rem;">
+                                    <span class="badge"
+                                        style="background: rgba(14, 165, 233, 0.1); color: var(--primary);">{{ row[3]
+                                        }}</span>
+                                </td>
+                                <td style="padding: 1.25rem;">
+                                    <span
+                                        class="badge {% if row[5] < 0.3 %}badge-risk-low{% elif row[5] < 0.6 %}badge-risk-mid{% else %}badge-risk-high{% endif %}">
+                                        {{ (row[5] or 0.1) | round(2) }}
+                                    </span>
+                                </td>
+                                <td style="padding: 1.25rem;">
+                                    <div
+                                        style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-muted);">
+                                        {{ row[2] }}
+                                    </div>
+                                </td>
+                                <td style="padding: 1.25rem;">
+                                    <div
+                                        style="max-width: 150px; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--success); font-size: 0.8125rem;">
+                                        {{ row[4] }}
+                                    </div>
+                                </td>
+                                <td style="padding: 1.25rem; font-size: 0.8125rem; color: var(--text-muted);">
+                                    {{ row[7] }}
+                                </td>
+                                <td style="padding: 1.25rem; text-align: center;">
+                                    <a href="{{ url_for('enc.delete_history', log_id=row[0]) }}"
+                                        onclick="return confirm('⚠️ Are you sure you want to permanently delete this audit record?')"
+                                        class="nav-item"
+                                        style="display: inline-flex; width: auto; background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 8px 12px; border-radius: 8px; margin-bottom: 0;">
+                                        <span style="font-size: 1.1rem;">🗑️</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if not data %}
+                <div style="padding: 4rem; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">📂</div>
+                    <h3 style="color: var(--text-muted);">No activity records found</h3>
+                    <p style="color: rgba(255,255,255,0.2);">Begin your first encryption to generate audit logs.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════ -->
+            <!--               FILE UPLOADS AUDIT SECTION              -->
+            <!-- ══════════════════════════════════════════════════════ -->
+            <div style="margin-top: 3rem;">
+                <div style="display:flex; align-items: center; gap: 12px; margin-bottom: 1.5rem;">
+                    <span
+                        style="background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); padding: 5px 14px; border-radius: 30px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">
+                        📁 File Uploads
+                    </span>
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">Encrypted files — download the original
+                        using the button below</span>
+                </div>
+
+                <div class="glass-card animate-in" style="padding: 0;">
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr
+                                    style="border-bottom: 1px solid var(--glass-border); color: var(--text-muted); font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                                    <th style="padding: 1rem;">ID</th>
+                                    <th style="padding: 1rem;">Original Filename</th>
+                                    <th style="padding: 1rem;">Algorithm</th>
+                                    <th style="padding: 1rem;">Risk Score</th>
+                                    <th style="padding: 1rem;">Uploaded At</th>
+                                    <th style="padding: 1rem; text-align: center;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 0.9375rem;">
+                                {% if file_data %}
+                                {% for frow in file_data %}
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.02); transition: 0.2s;"
+                                    onmouseover="this.style.background='rgba(139,92,246,0.04)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 1.25rem; font-weight: 500; color: var(--text-muted);">#{{ loop.index }}</td>
+                                    <td style="padding: 1.25rem;">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <span style="font-size: 1.1rem;">📄</span>
+                                            <span style="font-weight: 600; color: var(--text-light);">{{ frow[1]
+                                                }}</span>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 1.25rem;">
+                                        <span class="badge"
+                                            style="background: rgba(139,92,246,0.12); color: #a78bfa;">{{ frow[2]
+                                            }}</span>
+                                    </td>
+                                    <td style="padding: 1.25rem;">
+                                        <span
+                                            class="badge {% if (frow[3] or 0) < 0.3 %}badge-risk-low{% elif (frow[3] or 0) < 0.6 %}badge-risk-mid{% else %}badge-risk-high{% endif %}">
+                                            {{ (frow[3] or 0.1) | round(2) }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 1.25rem; font-size: 0.8125rem; color: var(--text-muted);">{{
+                                        frow[5] }}</td>
+                                    <td style="padding: 1.25rem; text-align: center;">
+                                        <div
+                                            style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                            <a href="{{ url_for('enc.download_file', file_key=frow[4]) }}"
+                                                style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; padding: 8px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-decoration: none; transition: all 0.2s;"
+                                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 15px rgba(124,58,237,0.5)'"
+                                                onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                                                ⬇️ Download
+                                            </a>
+                                            <a href="{{ url_for('enc.delete_file', file_id=frow[0]) }}"
+                                                onclick="return confirm('⚠️ This will permanently delete the encrypted file and its record. Are you sure?')"
+                                                style="display: inline-flex; align-items: center; gap: 6px; background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.25); padding: 8px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-decoration: none; transition: all 0.2s;"
+                                                onmouseover="this.style.background='rgba(239,68,68,0.22)'; this.style.transform='translateY(-1px)'"
+                                                onmouseout="this.style.background='rgba(239,68,68,0.12)'; this.style.transform=''">
+                                                🗑️ Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="6"
+                                        style="padding: 3rem; text-align: center; color: var(--text-muted);">
+                                        <div style="font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.4;">📁</div>
+                                        No file uploads found. Upload a file in the Encryption Center.
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        function updateThemeUI() {
+            const isLight = document.documentElement.classList.contains('light-mode');
+            themeIcon.innerText = isLight ? '☀️' : '🌙';
+            themeText.innerText = isLight ? 'Light Mode' : 'Dark Mode';
+        }
+
+        updateThemeUI();
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.documentElement.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeUI();
+        });
+    </script>
+
+</body>
+
+</html>

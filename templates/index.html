@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart AI Encryption | Secure Cloud Storage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'light') document.documentElement.classList.add('light-mode');
+        })();
+    </script>
+    <style>
+        .hero-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+        .hero-card {
+            max-width: 800px;
+            padding: 4.5rem;
+        }
+    </style>
+</head>
+<body class="body-auth">
+
+<button id="themeToggle" class="glass-card" style="position: fixed; top: 1.5rem; right: 1.5rem; padding: 0.75rem; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: transform 0.3s ease;">
+    <span id="themeIcon">🌙</span>
+</button>
+
+<div class="hero-container">
+    <div class="glass-card hero-card animate-in">
+        <div class="logo" style="justify-content: center; margin-bottom: 2.5rem; font-size: 1.5rem;">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img" alt="Logo" style="width: 50px; height: 50px;"> AI-Driven Sec
+        </div>
+        
+        <div class="badge badge-risk-low" style="margin-bottom: 1.5rem;">Cloud-Native Standard</div>
+        <h1 class="text-gradient" style="font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1;">Advanced Encryption for Cloud Data</h1>
+        <p style="color: var(--text-muted); font-size: 1.125rem; margin-bottom: 3rem; max-width: 600px; margin-inline: auto;">
+            Protect your sensitive digital assets with machine learning-driven cryptographic key rotation. 
+            The system adapts to network patterns, ensuring your data is always one step ahead.
+        </p>
+
+        <div style="display: flex; gap: 1.5rem; justify-content: center;">
+            <a href="/login" class="btn-primary" style="display: inline-block; width: auto; min-width: 200px;">Access Secure Vault</a>
+            <a href="/register" class="nav-item" style="border: 1px solid var(--glass-border); padding: 1rem 2rem; border-radius: 14px; width: auto; min-width: 200px;">Create Access Credentials</a>
+        </div>
+
+        <div style="margin-top: 4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; border-top: 1px solid var(--glass-border); padding-top: 3rem;">
+            <div>
+                <h4 style="color: var(--primary); margin-bottom: 8px;">Adaptive Engine</h4>
+                <p style="font-size: 0.8125rem; color: var(--text-muted);">Real-time behavior and threat assessment.</p>
+            </div>
+            <div>
+                <h4 style="color: var(--secondary); margin-bottom: 8px;">Multi-Algo Support</h4>
+                <p style="font-size: 0.8125rem; color: var(--text-muted);">Dynamically switches between AES, RSA, and ECC.</p>
+            </div>
+            <div>
+                <h4 style="color: var(--accent); margin-bottom: 8px;">Automated Rotation</h4>
+                <p style="font-size: 0.8125rem; color: var(--text-muted);">Intelligent key refreshing based on risk entropy.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    function updateIcon() {
+        const isLight = document.documentElement.classList.contains('light-mode');
+        themeIcon.innerText = isLight ? '☀️' : '🌙';
+    }
+
+    updateIcon();
+
+    themeToggle.addEventListener('click', () => {
+        const isLight = document.documentElement.classList.toggle('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        updateIcon();
+    });
+</script>
+
+</body>
+</html>
