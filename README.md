@@ -1,4 +1,4 @@
-# 🛡️ AI-Driven Secure Cloud Assets Management with Intelligent Key Rotation
+# 🛡️ AI-Driven Secure Cloud Assets Management with Intelligen Key Rotation
 
 An enterprise-grade, high-fidelity security platform that utilizes **Artificial Intelligence** to dynamically manage data encryption, analyze risk sensitivity, and automate cryptographic key lifecycles. 
 
